@@ -1,0 +1,2461 @@
+/* ============================================
+   BACK TO NATURE TOURS — Master Stylesheet
+   ============================================ */
+
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+/* --- Custom Properties --- */
+:root {
+  --color-primary: #124d38;
+  --color-secondary: #0b3324;
+  --color-cta: #16624a;        /* restrained forest-green CTA (replaces orange) */
+  --color-cta-hover: #0d3a2b;
+  --color-nav-bg: transparent;
+  --color-dark: #0b2218;
+  --color-darker: #06140e;
+  --color-text: #2d4239;
+  --color-text-light: #577366;
+  --color-text-muted: #8ca398;
+  --color-white: #ffffff;
+  --color-off-white: #f8fcfb;
+  --color-border: #dbeae4;
+
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+
+  --max-width: 1280px;
+  --nav-height: 90px;
+
+  --shadow-sm: 0 4px 12px rgba(11, 34, 24, 0.04);
+  --shadow-md: 0 8px 24px rgba(11, 34, 24, 0.08);
+  --shadow-lg: 0 16px 48px rgba(11, 34, 24, 0.12);
+  --shadow-xl: 0 24px 64px rgba(11, 34, 24, 0.16);
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* --- Reset / Normalize --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* was smooth — makes anchor jumps (hero → #tours) instant/quicker */
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--color-text);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-dark);
+}
+
+/* --- Utility --- */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-padding {
+  padding: clamp(52px, 6vw, 92px) 0;
+}
+
+.section-padding-sm {
+  padding: 40px 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-cta);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-dark);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-light);
+  max-width: 640px;
+  margin: 0 auto 48px;
+  line-height: 1.8;
+}
+
+/* --- Scroll Animations --- */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.fade-in-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* stagger children */
+.stagger-children .fade-in:nth-child(1) { transition-delay: 0s; }
+.stagger-children .fade-in:nth-child(2) { transition-delay: 0.12s; }
+.stagger-children .fade-in:nth-child(3) { transition-delay: 0.24s; }
+.stagger-children .fade-in:nth-child(4) { transition-delay: 0.36s; }
+.stagger-children .fade-in:nth-child(5) { transition-delay: 0.48s; }
+.stagger-children .fade-in:nth-child(6) { transition-delay: 0.60s; }
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background: var(--color-nav-bg);
+  z-index: 1000;
+  transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 2px 16px rgba(11, 34, 24, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* On a light (scrolled) bar, flip nav text/hamburger to dark */
+.navbar.scrolled .nav-link { color: var(--color-dark); }
+.navbar.scrolled .nav-link:hover { color: var(--color-cta); }
+.navbar.scrolled .nav-toggle span { background: var(--color-dark); }
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.nav-logo-mark {
+  height: 76px;
+  width: auto;
+  display: block;
+}
+
+.nav-logo-text {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: 0.3px;
+  color: var(--color-white);
+  white-space: nowrap;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* On the solid white scrolled bar, flip the wordmark to green */
+.navbar.scrolled .nav-logo-text {
+  color: var(--color-primary);
+  text-shadow: none;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  display: block;
+  padding: 8px 10px;
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  color: var(--color-primary);
+}
+
+/* Dropdown */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 280px;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all var(--transition-base);
+  padding: 8px 0;
+  z-index: 100;
+}
+
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav-dropdown a {
+  display: block;
+  padding: 12px 24px;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.nav-dropdown a:hover {
+  background: var(--color-off-white);
+  color: var(--color-cta);
+}
+
+/* Dropdown arrow */
+.nav-link.has-dropdown::after {
+  content: '▾';
+  margin-left: 5px;
+  font-size: 0.7em;
+  transition: transform var(--transition-fast);
+}
+
+.nav-item:hover .nav-link.has-dropdown::after {
+  transform: rotate(180deg);
+}
+
+/* Nav CTA */
+.nav-cta {
+  display: inline-block;
+  padding: 10px 28px;
+  background: var(--color-cta);
+  color: var(--color-white) !important;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 50px;
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+  margin-left: 12px;
+}
+
+.nav-cta:hover {
+  background: var(--color-cta-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(18, 77, 56, 0.35);
+  color: var(--color-white) !important;
+}
+
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 1010;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+}
+
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Native-build hamburger: Webflow has no empty <span> element, so the 3 bars are
+   Div Blocks with class .nav-toggle-bar. These mirror the .nav-toggle span rules
+   above so a fully-native (Chris-editable) navbar animates identically. */
+.nav-toggle .nav-toggle-bar {
+  display: block;
+  width: 26px;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: all var(--transition-base);
+}
+.navbar.scrolled .nav-toggle .nav-toggle-bar { background: var(--color-dark); }
+.nav-toggle.active .nav-toggle-bar:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.nav-toggle.active .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.nav-toggle.active .nav-toggle-bar:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Webflow native-navbar guard.
+   Designer-generated classes currently add `.container { background-color:#fff; }`,
+   `.nav-logo-mark { width:70px; }`, and inner div wrappers inside links/buttons.
+   Scope the reset to .navbar so the published Webflow build keeps the prototype nav
+   without disturbing ordinary page containers or buttons. */
+.navbar > .container {
+  background: transparent !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.navbar .nav-logo,
+.navbar .nav-link,
+.navbar .btn {
+  text-decoration: none;
+}
+
+.navbar .nav-logo-mark {
+  width: auto !important;
+  max-width: none;
+  object-fit: contain;
+}
+
+.navbar .nav-menu {
+  display: flex !important;
+  grid-template: none;
+  grid-auto-columns: auto;
+}
+
+.navbar .nav-link.w-inline-block {
+  display: block;
+}
+
+.navbar .nav-link > div,
+.navbar .btn > div {
+  display: inline;
+  line-height: inherit;
+}
+
+.navbar .btn.btn-primary.btn-sm {
+  margin: 0 0 0 8px;
+  color: var(--color-white);
+}
+
+.navbar .nav-toggle {
+  background: transparent;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .navbar .btn.btn-primary.btn-sm {
+    margin-left: 0;
+    margin-top: 16px;
+  }
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 40px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 50px;
+  transition: all var(--transition-base);
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: var(--color-cta);
+  color: var(--color-white);
+  border-color: var(--color-cta);
+}
+
+.btn-primary:hover {
+  background: var(--color-cta-hover);
+  border-color: var(--color-cta-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(18, 77, 56, 0.3);
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  color: var(--color-white);
+  border-color: var(--color-secondary);
+}
+
+.btn-secondary:hover {
+  background: #7fa52b;
+  border-color: #7fa52b;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(146, 186, 52, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.btn-outline:hover {
+  background: var(--color-white);
+  color: var(--color-dark);
+  transform: translateY(-2px);
+}
+
+.btn-outline-dark {
+  background: transparent;
+  color: var(--color-dark);
+  border-color: var(--color-dark);
+}
+
+.btn-outline-dark:hover {
+  background: var(--color-dark);
+  color: var(--color-white);
+  transform: translateY(-2px);
+}
+
+.btn-lg {
+  padding: 20px 52px;
+  font-size: 1rem;
+}
+
+/* — Override for a Webflow-generated broken combo class —
+   When the hero button was resized on the Webflow canvas, Webflow auto-wrote
+   `.btn.btn-primary.btn-lg { max-width:0; padding:0; display:block }` into its own
+   stylesheet. That 3-class combo out-specifies our single-class `.btn`, so it collapsed
+   every large primary button to a ~4px sliver. This rule matches the combo's specificity
+   and loads after Webflow's CSS, restoring the intended pill. Safe to keep permanently. */
+.btn.btn-primary.btn-lg,
+.btn.btn-primary-copy.btn-lg {
+  display: inline-flex;
+  position: relative;
+  min-width: 0;
+  max-width: none;
+  min-height: auto;
+  margin: 0;
+  padding: 20px 52px;
+  overflow: hidden;
+}
+
+.btn-sm {
+  padding: 10px 24px;
+  font-size: 0.8rem;
+}
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+/* Full-bleed background video — paints over .hero-bg poster.
+   Falls back to the poster on mobile / reduced-motion (see media queries). */
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Native hero photo (Webflow uses a native <img class="hero-photo"> so Chris can
+   swap it in Edit Mode). This makes that <img> behave exactly like .hero-bg —
+   a full-bleed cover background — with NO Designer positioning needed. */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: 1;
+}
+
+/* Defensive: a stray <br> (from pressing Enter while editing a button's text)
+   must never make a button two lines tall. */
+.btn br { display: none; }
+
+/* Minimal scrim — let the footage shine. Just a whisper at the very top
+   (nav legibility) and a soft pool at the bottom (headline). Middle is clear. */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.20) 0%,
+    rgba(0, 0, 0, 0.08) 35%,
+    rgba(0, 0, 0, 0.12) 55%,
+    rgba(0, 0, 0, 0.34) 100%
+  );
+  z-index: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 900px;
+  padding: 0 24px;
+}
+
+.hero-content h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.75rem, 6vw, 5rem);
+  font-weight: 600;
+  color: var(--color-white);
+  margin-bottom: 16px;
+  /* Legibility over a bright photo comes from the text shadow, not a dark overlay */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6), 0 4px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* Subpage hero subtitle (uses <p>) — keep legible over the photo */
+.hero-content p {
+  color: #ffffff;
+  font-weight: 400;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content h2 {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55), 0 2px 16px rgba(0, 0, 0, 0.4);
+}
+
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  animation: bounceDown 2s ease-in-out infinite;
+}
+
+.hero-scroll-indicator span {
+  display: block;
+  width: 28px;
+  height: 44px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 14px;
+  position: relative;
+}
+
+.hero-scroll-indicator span::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 2px;
+  animation: scrollDot 2s ease-in-out infinite;
+}
+
+@keyframes bounceDown {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+@keyframes scrollDot {
+  0%, 100% { opacity: 1; top: 8px; }
+  50% { opacity: 0.3; top: 20px; }
+}
+
+/* ============================================
+   TRUST STRIP (social proof under the hero)
+   ============================================ */
+.trust-strip {
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  padding: 26px 0;
+}
+
+.trust-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px 44px;
+}
+
+.trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.trust-item .trust-ic {
+  width: 22px;
+  height: 22px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.trust-item .trust-ic svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.trust-stars {
+  color: #f0a500;            /* gold — universal "rating" cue, not a brand accent */
+  letter-spacing: 2px;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .trust-row { gap: 12px 22px; }
+  .trust-item { font-size: 0.8rem; }
+}
+
+/* ============================================
+   PAGE HERO (shorter, for subpages)
+   ============================================ */
+.page-hero {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  margin-top: var(--nav-height);
+}
+
+.page-hero .hero-content h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+/* ============================================
+   TOUR CATEGORY CARDS
+   ============================================ */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.category-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  height: 400px;
+  display: flex;
+  align-items: flex-end;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.category-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+}
+
+.category-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform var(--transition-slow);
+}
+
+.category-card:hover .category-card-bg {
+  transform: scale(1.05);
+}
+
+/* Native (Chris-editable) card photo: a real <img class="category-card-img"> behaves
+   like .category-card-bg. Place it FIRST inside .category-card (before the overlay +
+   content) so it sits behind them. z-index:0 keeps it under the z-index:2 content. */
+.category-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  transition: transform var(--transition-slow);
+}
+.category-card:hover .category-card-img { transform: scale(1.05); }
+
+.category-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.55) 65%,
+    rgba(0, 0, 0, 0.88) 100%
+  );
+}
+
+/* Visible call-to-action on category cards (was near-invisible plain text) */
+.category-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--color-white);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  padding: 9px 20px;
+  border-radius: 50px;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+.category-card:hover .category-cta {
+  background: var(--color-white);
+  color: var(--color-primary);
+}
+
+.category-card-content {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+  width: 100%;
+}
+
+.category-card-content h3 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-white);
+  margin-bottom: 8px;
+}
+
+.category-card-content p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+
+.category-card-content .btn {
+  padding: 12px 30px;
+  font-size: 0.8rem;
+}
+
+/* ============================================================
+   CHOOSE YOUR TOUR — home 2-col category grid (#tours).
+   Make the two cards render IDENTICALLY (mirror) even though the
+   native Webflow build gave each <img> its own image-3/image-4
+   class and nested the overlay / heading / CTA differently per
+   card. Every part is pinned to the card itself, and everything
+   is scoped to .category-grid-2col so the base .category-card
+   component (and other pages) are untouched. Also restores the
+   spacing the prototype only had as inline styles: the heading
+   gap and the section tint.
+   ------------------------------------------------------------ */
+
+/* gap between the "Choose Your Tour" heading and the cards (was inline 48px) */
+.text-center:has(+ .category-grid-2col) { margin-bottom: 48px; }
+
+/* section tint to match the prototype */
+section#tours { background: var(--color-off-white); }
+
+/* any image in a card = the full-bleed background (covers image-3 / image-4) */
+.category-grid-2col .category-card { background: transparent; }
+.category-grid-2col .category-card img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; z-index: 0;
+  transition: transform var(--transition-slow);
+}
+.category-grid-2col .category-card:hover img { transform: scale(1.05); }
+
+/* gradient + content cover the whole card regardless of how they were nested */
+.category-grid-2col .category-card-overlay { z-index: 1; }
+.category-grid-2col .category-card-content {
+  position: absolute; inset: 0; padding: 0; z-index: 2;
+}
+.category-grid-2col .category-card h3 {
+  position: absolute; left: 40px; right: 40px; bottom: 90px; margin: 0;
+  background: transparent; color: var(--color-white); font-size: 2rem;
+}
+
+/* CTA pill drawn on the card → shows + aligns identically on both cards whether or not
+   the native element/text exists. Hide any native CTA (card 1's empty .category-cta and
+   card 2's unclassed text div) so it can't duplicate. To make the label client-editable,
+   rebuild the CTA as a native Text Block with class .category-cta and delete this ::after
+   pair (see the canvas steps). */
+.category-grid-2col .category-cta,
+.category-grid-2col .category-card-content > div:not(.category-card-overlay) { display: none; }
+.category-grid-2col .category-card::after {
+  position: absolute; left: 40px; bottom: 40px; z-index: 3;
+  padding: 9px 20px; border-radius: 50px;
+  background: #fff; color: var(--color-primary);
+  font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; letter-spacing: 0.3px;
+}
+.category-grid-2col .category-card[href="/tours"]::after { content: "View all tours \2192"; }
+.category-grid-2col .category-card[href="/private-tours"]::after { content: "Learn more \2192"; }
+
+/* ============================================
+   TOUR CARDS
+   ============================================ */
+.tour-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+@media (min-width: 1025px) {
+  .tour-grid.tour-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Clean light cards: photo on top, content on white (ultimatehikes style) */
+.tour-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  cursor: pointer;
+}
+
+.tour-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.tour-card-media {
+  position: relative;
+  overflow: hidden;
+}
+
+.tour-card-bg {
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  transition: transform var(--transition-slow);
+}
+
+.tour-card:hover .tour-card-bg {
+  transform: scale(1.05);
+}
+
+/* Scannable duration pill on the photo */
+.tour-duration {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-dark);
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 5px 12px;
+  border-radius: 50px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.tour-card-content {
+  padding: 24px 24px 28px;
+}
+
+.tour-card-content h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.tour-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 16px;
+  color: var(--color-text-light);
+  font-size: 0.85rem;
+}
+
+.tour-card-price {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+.tour-card-price strong {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Inner pages reuse the older card markup (overlay/badge/chips). These rules make
+   that markup render in the new clean light-card style without rewriting each page. */
+.tour-card-overlay { display: none; }
+
+.tour-card-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 50px;
+}
+
+.tour-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--color-off-white);
+  color: var(--color-text-light);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 50px;
+  border: 1px solid var(--color-border);
+}
+
+/* ============================================
+   ABOUT / SPLIT SECTION
+   ============================================ */
+.split-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.split-image {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+}
+
+.split-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 450px;
+}
+
+.split-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+  pointer-events: none;
+}
+
+.split-text .section-label {
+  text-align: left;
+}
+
+.split-text h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  margin-bottom: 20px;
+  color: var(--color-dark);
+}
+
+.split-text p {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--color-text-light);
+  margin-bottom: 32px;
+}
+
+/* Decorative line accent */
+.split-text h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: var(--color-cta);
+  margin-top: 16px;
+  border-radius: 2px;
+}
+
+/* ============================================
+   TESTIMONIAL
+   ============================================ */
+.testimonial-section {
+  background: var(--color-off-white);
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-section::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 300px;
+  height: 300px;
+  background: var(--color-primary);
+  opacity: 0.05;
+  border-radius: 50%;
+}
+
+.testimonial-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.testimonial-stars {
+  font-size: 1.4rem;
+  color: var(--color-primary);
+  margin-bottom: 32px;
+  letter-spacing: 4px;
+}
+
+.testimonial-quote {
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  color: var(--color-dark);
+  line-height: 1.5;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+
+
+.testimonial-author {
+  font-size: 0.95rem;
+  color: var(--color-text-light);
+  font-weight: 500;
+}
+
+.testimonial-author strong {
+  color: var(--color-primary);
+}
+
+/* ============================================
+   INSTAGRAM GRID
+   ============================================ */
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.instagram-item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+}
+
+.instagram-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.instagram-item::after {
+  content: '❤';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  color: var(--color-white);
+  font-size: 1.5rem;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.instagram-item:hover img {
+  transform: scale(1.1);
+}
+
+.instagram-item:hover::after {
+  opacity: 1;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  background: var(--color-primary);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 60px;
+  padding: 80px 0 60px;
+}
+
+.footer-brand .nav-logo {
+  display: inline-flex;
+  margin-bottom: 16px;
+}
+
+/* Keep the footer emblem at its original size — only the top-left nav logo is enlarged */
+.footer-brand .nav-logo-mark {
+  height: 46px;
+}
+
+.footer-brand .nav-logo-text {
+  color: var(--color-white);
+  text-shadow: none;
+}
+
+.footer-brand p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  max-width: 320px;
+}
+
+.footer-address {
+  font-style: normal;
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+
+.footer h4 {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-white);
+  margin-bottom: 24px;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.92rem;
+  transition: color var(--transition-fast), padding-left var(--transition-fast);
+}
+
+.footer-links a:hover {
+  color: var(--color-white);
+  padding-left: 4px;
+}
+
+.footer-contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+}
+
+.footer-contact .icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--color-white);
+}
+
+/* ============================================
+   ACCORDION
+   ============================================ */
+.accordion {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  text-align: left;
+}
+
+.accordion-header:hover {
+  color: var(--color-cta);
+}
+
+.accordion-icon {
+  font-size: 1.4rem;
+  font-weight: 300;
+  transition: transform var(--transition-base);
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(45deg);
+}
+
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base) ease-out;
+}
+
+.accordion-body-inner {
+  padding: 0 0 24px;
+  color: var(--color-text-light);
+  line-height: 1.8;
+  font-size: 0.95rem;
+}
+
+.accordion-item.active .accordion-body {
+  max-height: 500px;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-white);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--color-cta);
+  box-shadow: 0 0 0 4px rgba(18, 77, 56, 0.12);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+/* --- Contact page: restore the prototype look in a native Webflow build ---
+   A native build drops the prototype's inline styles, so make them class-driven.
+   In Webflow: add `.contact-info` to the LEFT column div, `.contact-form-card`
+   to the Form Block. (Also required: Body class `nav-solid`; the 2-col wrapper
+   must be `.split-section`, NOT `.split-screen`.) Contact-line icons are pure CSS
+   (below) — keyed off the mailto:/tel: links so they survive content edits. */
+.contact-info .section-title { text-align: left; margin-bottom: 16px; }
+.contact-info > p { font-size: 1.1rem; line-height: 1.7; color: var(--color-text-light); max-width: 460px; margin: 0 0 32px; }
+.contact-info ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; font-size: 1.05rem; color: var(--color-text); }
+.contact-info ul li { display: flex; align-items: center; gap: 14px; }
+.contact-info ul a { color: var(--color-cta); font-weight: 600; }
+.contact-info ul li::before {
+  content: ""; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+  background-color: rgba(18, 77, 56, 0.08);
+  background-repeat: no-repeat; background-position: center; background-size: 20px 20px;
+}
+.contact-info ul li:first-child::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23124d38%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M21%2010c0%207-9%2013-9%2013s-9-6-9-13a9%209%200%200%201%2018%200z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2210%22%20r%3D%223%22%2F%3E%3C%2Fsvg%3E"); }
+.contact-info ul li:has(a[href^="mailto:"])::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23124d38%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%2220%22%20height%3D%2216%22%20rx%3D%222%22%2F%3E%3Cpath%20d%3D%22m22%207-10%206L2%207%22%2F%3E%3C%2Fsvg%3E"); }
+.contact-info ul li:has(a[href^="tel:"])::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23124d38%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M22%2016.92v3a2%202%200%200%201-2.18%202%2019.79%2019.79%200%200%201-8.63-3.07%2019.5%2019.5%200%200%201-6-6%2019.79%2019.79%200%200%201-3.07-8.67A2%202%200%200%201%204.11%202h3a2%202%200%200%201%202%201.72c.13.96.36%201.9.7%202.81a2%202%200%200%201-.45%202.11L8.09%209.91a16%2016%200%200%200%206%206l1.27-1.27a2%202%200%200%201%202.11-.45c.91.34%201.85.57%202.81.7A2%202%200%200%201%2022%2016.92z%22%2F%3E%3C%2Fsvg%3E"); }
+.contact-info ul li:last-child::before { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23124d38%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%2210%22%2F%3E%3Cpath%20d%3D%22M12%206v6l4%202%22%2F%3E%3C%2Fsvg%3E"); }
+/* Class sits on the <form> itself, so make IT the flex column. Zero Webflow's
+   default .w-input margin so the gap alone controls field spacing. */
+.contact-form-card { background: var(--color-off-white); padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 20px; }
+.contact-form-card .w-input,
+.contact-form-card .form-input,
+.contact-form-card .form-textarea { margin-bottom: 0; }
+.contact-form-card .btn,
+.contact-form-card .w-button { align-self: flex-start; margin-top: 4px; }
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* ============================================
+   RESPONSIVE — TABLET (≤ 1024px)
+   ============================================ */
+@media (max-width: 1024px) {
+  .tour-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .split-section {
+    gap: 48px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .instagram-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .nav-link {
+    padding: 8px 10px;
+    font-size: 0.82rem;
+  }
+
+  .nav-cta {
+    padding: 8px 20px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ============================================
+   RESPONSIVE — MOBILE (≤ 768px)
+   ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 68px;
+  }
+
+  .nav-logo-mark {
+    height: 54px;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: var(--color-primary);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    transition: right var(--transition-base);
+    padding: 80px 24px 40px;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  .nav-link {
+    font-size: 1.1rem;
+    padding: 14px 20px;
+  }
+
+  .nav-cta {
+    margin-left: 0;
+    margin-top: 16px;
+    padding: 14px 36px;
+    font-size: 0.9rem;
+  }
+
+  .nav-dropdown {
+    position: static;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: none;
+    border-radius: var(--radius-sm);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: max-height var(--transition-base);
+    margin-top: 4px;
+  }
+
+  .nav-item.dropdown-open .nav-dropdown {
+    max-height: 400px;
+  }
+
+  .nav-dropdown a {
+    color: rgba(255, 255, 255, 0.7);
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .nav-dropdown a:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--color-primary);
+  }
+
+  /* Keep mobile-drawer links readable on the green panel even when scrolled */
+  .navbar.scrolled .nav-menu .nav-link { color: var(--color-white); }
+  .navbar.scrolled .nav-menu .nav-link:hover { color: rgba(255, 255, 255, 0.7); }
+
+  /* Hero */
+  .hero {
+    min-height: 500px;
+  }
+
+  /* Drop background videos on mobile — show poster images instead (perf + data) */
+  .hero-video,
+  .video-band-video { display: none; }
+
+  .hero-content h2 {
+    letter-spacing: 1.5px;
+  }
+
+  /* Grids */
+  .category-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .category-card {
+    height: 300px;
+  }
+
+  .tour-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .tour-card-bg {
+    height: 200px;
+  }
+
+  .split-section {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .split-image img {
+    min-height: 300px;
+  }
+
+  .instagram-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .section-padding {
+    padding: 48px 0;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    padding: 14px 32px;
+    font-size: 0.85rem;
+  }
+
+  .btn-lg {
+    padding: 16px 40px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE (≤ 480px)
+   ============================================ */
+@media (max-width: 480px) {
+  .instagram-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .category-card-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .tour-card-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .testimonial-quote {
+    font-size: 1.1rem;
+  }
+}
+
+/* ============================================
+   VIDEO "WATCH" BAND  + MODAL
+   ============================================ */
+.video-band {
+  position: relative;
+  min-height: clamp(560px, 88vh, 880px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.video-band-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+}
+
+/* Autoplaying background film — paints over the poster bg */
+.video-band-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.video-band-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.30) 0%, rgba(0, 0, 0, 0.12) 45%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.video-band-content {
+  position: relative;
+  z-index: 3;
+  max-width: 760px;
+  padding: 0 24px;
+}
+
+.video-band-kicker {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 18px;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+}
+
+.video-band-content h2 {
+  color: var(--color-white);
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 18px;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+}
+
+.video-band-content p {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  line-height: 1.7;
+  max-width: 600px;
+  margin: 0 auto 32px;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* Value-prop icons (replaces the old separator bars) */
+.value-prop .vp-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 18px;
+  color: var(--color-primary);
+}
+
+.value-prop .vp-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* ============================================
+   REDUCED MOTION — respect user preference
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .video-band-video { display: none; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === INNER-PAGE DESIGN KIT (2026-06-21) === */
+/* Shared components promoted from the homepage inline <style> (fixes unstyled
+   footer social icons + makes value-props/gallery/accreditations site-wide). */
+.value-props { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; }
+.value-prop { text-align: center; }
+.value-prop h4 { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; margin-bottom: 12px; color: var(--color-dark); }
+.value-prop p { font-size: 0.95rem; line-height: 1.75; color: var(--color-text-light); }
+.category-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.photo-gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.photo-gallery img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border-radius: 8px; transition: transform .3s ease, opacity .3s ease; }
+.photo-gallery img:hover { transform: scale(1.03); opacity: .9; }
+.accreditation-row { display: flex; justify-content: center; align-items: center; gap: 56px; flex-wrap: wrap; }
+.accreditation-logo { width: auto; display: block; }
+.accreditation-am { height: 140px; }
+.accreditation-doc { height: 168px; }
+.accreditation-caption { text-align: center; margin-top: 28px; font-size: 1.05rem; font-weight: 600; color: var(--color-dark); letter-spacing: .2px; }
+/* --- Section 8 accreditations: live Webflow build fallback (2026-06-23) ---
+   The Webflow build's two logos carry no per-logo class yet, so the .accreditation-doc
+   /.accreditation-am height rules above don't reach them. Size by position instead
+   (DOC first + taller, AdventureMark second) and tint the section off-white, so the
+   live page mirrors the prototype with no Designer edit. Adding the classes in Webflow
+   later stays compatible — identical heights. */
+.section-padding:has(.accreditation-row) { background: var(--color-off-white); }
+.accreditation-row img:first-child  { height: 168px; width: auto; }  /* DOC */
+.accreditation-row img:nth-child(2) { height: 140px; width: auto; }  /* AdventureMark */
+/* Section 8 — fixes for what got built in the Designer (23 Jun): a heading was added,
+   and the caption div was placed INSIDE the flex .accreditation-row. Give the heading
+   the standard gap, push the caption onto its own full-width line under the logos, and
+   neutralize the stray <br> Webflow left in the caption. */
+.text-center:has(+ .accreditation-row) { margin-bottom: 48px; }
+.accreditation-row .accreditation-caption { flex-basis: 100%; }
+.accreditation-caption br { display: none; }
+.testimonial-carousel { display: grid; grid-template-columns: 1fr; }
+.testimonial-slide { grid-row: 1; grid-column: 1; opacity: 0; visibility: hidden; transition: opacity .6s ease, transform .6s ease; transform: translateY(10px); }
+.testimonial-slide.active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 1; }
+.testimonial-dots { display: flex; justify-content: center; gap: 10px; margin-top: 24px; grid-row: 2; grid-column: 1; z-index: 2; }
+.testimonial-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(18,77,56,.2); border: none; cursor: pointer; transition: background .3s; }
+.testimonial-dot.active { background: var(--color-primary); }
+.footer-social { display: flex; gap: 12px; margin-top: 18px; }
+.social-link { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; color: #fff; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); transition: background .25s ease, border-color .25s ease, transform .25s ease; }
+.social-link svg { width: 21px; height: 21px; display: block; }
+.social-link:hover { background: #fff; border-color: #fff; color: var(--color-primary); transform: translateY(-2px); }
+/* Footer: HARD-FORCE dark bg + light text in the online sheet so the footer text is never
+   invisible, regardless of any Webflow wrapper leaving a white background behind it. */
+.footer { background: #124d38 !important; }
+.footer, .footer p, .footer li, .footer span,
+.footer .footer-links a, .footer .footer-contact a,
+.footer .footer-bottom, .footer .footer-bottom-links a { color: rgba(255,255,255,.85) !important; }
+.footer h4, .footer a:hover, .footer .footer-bottom-links a:hover { color: #ffffff !important; }
+
+/* Inner hero (shorter than the full-screen homepage hero) */
+.hero--inner { height: 58vh; min-height: 440px; }
+.hero--inner .hero-content h1 { font-size: clamp(2.25rem, 5vw, 3.75rem); }
+.hero-subtitle { font-size: 1.25rem; margin-top: 12px; }
+
+/* Compact page header (no big photo) for utility/conversion pages */
+.page-header { padding: calc(var(--nav-height) + 56px) 0 56px; background: linear-gradient(180deg, var(--color-off-white) 0%, var(--color-white) 100%); border-bottom: 1px solid var(--color-border); text-align: center; }
+.page-header h1 { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); color: var(--color-dark); margin-bottom: 10px; }
+.page-header p { color: var(--color-text-light); font-size: 1.15rem; max-width: 640px; margin: 0 auto; }
+.page-header--plain { background: var(--color-white); text-align: left; }
+.page-header--plain .container { max-width: 820px; }
+
+/* Solid nav for pages without a dark hero behind the bar */
+body.nav-solid .navbar { background: rgba(255,255,255,.97); box-shadow: 0 2px 16px rgba(11,34,24,.08); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+body.nav-solid .nav-link { color: var(--color-dark); }
+body.nav-solid .nav-link:hover { color: var(--color-cta); }
+body.nav-solid .nav-toggle span { background: var(--color-dark); }
+body.nav-solid .nav-logo-text { color: var(--color-primary); text-shadow: none; }
+
+/* Breadcrumb */
+.breadcrumb { font-size: .82rem; letter-spacing: .3px; color: var(--color-text-muted); margin-bottom: 18px; }
+.breadcrumb a { color: var(--color-text-light); }
+.breadcrumb a:hover { color: var(--color-cta); }
+.breadcrumb .sep { margin: 0 8px; opacity: .6; }
+
+/* Lead + prose readable column */
+.content-narrow { max-width: 820px; margin: 0 auto; }
+.lead { font-size: 1.3rem; line-height: 1.7; color: var(--color-text); margin-bottom: 36px; }
+.prose > p { margin-bottom: 20px; font-size: 1.08rem; line-height: 1.85; color: var(--color-text); }
+.prose h2 { font-family: var(--font-heading); font-size: clamp(1.5rem, 3vw, 2rem); color: var(--color-dark); margin: 48px 0 16px; }
+.prose h3 { font-family: var(--font-heading); font-size: 1.3rem; color: var(--color-primary); margin: 36px 0 12px; }
+.prose ul { margin: 0 0 20px 1.1em; }
+.prose li { font-size: 1.05rem; line-height: 1.8; color: var(--color-text); margin-bottom: 8px; }
+.prose a { color: var(--color-cta); text-decoration: underline; text-underline-offset: 3px; }
+.prose strong { color: var(--color-dark); }
+.pull-quote { border-left: 4px solid var(--color-cta); padding: 8px 0 8px 24px; margin: 32px 0; font-family: var(--font-heading); font-size: 1.4rem; line-height: 1.5; color: var(--color-primary); }
+
+/* Feature row image (reuses the .split-section grid) */
+.feature-img { width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); display: block; object-fit: cover; }
+
+/* Fact strip (tour key facts) */
+.fact-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--color-border); border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; }
+.fact { background: var(--color-white); padding: 22px 18px; text-align: center; }
+.fact .fact-label { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--color-text-muted); margin-bottom: 6px; }
+.fact .fact-value { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 600; color: var(--color-dark); }
+
+/* CTA band (forest-green) */
+.cta-band { background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%); text-align: center; }
+.cta-band h2 { font-family: var(--font-heading); font-size: clamp(1.75rem, 3.5vw, 2.6rem); color: #fff; margin-bottom: 14px; }
+.cta-band p { color: rgba(255,255,255,.85); font-size: 1.1rem; max-width: 620px; margin: 0 auto 28px; }
+.cta-band .btn-primary { background: #fff; color: var(--color-primary); border-color: #fff; }
+.cta-band .btn-primary:hover { background: rgba(255,255,255,.9); border-color: rgba(255,255,255,.9); color: var(--color-secondary); }
+.cta-band .btn-outline { background: transparent; color: #fff; border-color: rgba(255,255,255,.6); }
+.cta-band .btn-outline:hover { background: #fff; color: var(--color-primary); border-color: #fff; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* Review grid (testimonials) */
+.review-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.review-card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm); }
+.review-card .review-stars { color: #f5a623; letter-spacing: 2px; margin-bottom: 12px; }
+.review-card p { font-size: 1rem; line-height: 1.7; color: var(--color-text); margin-bottom: 16px; font-style: italic; }
+.review-card .review-author { font-weight: 600; color: var(--color-dark); font-style: normal; }
+
+@media (max-width: 768px) {
+  .value-props { grid-template-columns: 1fr; gap: 32px; }
+  .category-grid-2col { grid-template-columns: 1fr; }
+  .fact-strip { grid-template-columns: 1fr 1fr; }
+  .review-grid { grid-template-columns: 1fr; }
+  .accreditation-row { gap: 36px; }
+  .accreditation-am { height: 104px; }
+  .accreditation-doc { height: 124px; }
+  .accreditation-row img:first-child  { height: 124px; width: auto; }  /* DOC */
+  .accreditation-row img:nth-child(2) { height: 104px; width: auto; }  /* AdventureMark */
+  .lead { font-size: 1.15rem; }
+  .hero--inner { height: auto; min-height: 360px; }
+}
+
+/* === TOUR PRICING (2026-06-21) === */
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+.price-card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px; text-align: center; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 14px; }
+.price-card-head { display: flex; flex-direction: column; gap: 2px; }
+.price-type { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 600; color: var(--color-dark); }
+.price-sub { font-size: .85rem; color: var(--color-text-muted); }
+.price-amount { font-family: var(--font-heading); font-size: 2.1rem; font-weight: 700; color: var(--color-primary); }
+.price-amount span { font-size: .9rem; font-weight: 500; color: var(--color-text-light); }
+.price-card .btn { width: 100%; }
+
+/* === ACCORDION trigger/panel (JS max-height pattern) === */
+.accordion-trigger { width:100%; display:flex; justify-content:space-between; align-items:center; gap:16px; padding:20px 4px; background:transparent; border:none; text-align:left; font-family:var(--font-heading); font-size:1.05rem; font-weight:600; color:var(--color-dark); cursor:pointer; transition:color var(--transition-fast); }
+.accordion-trigger:hover { color:var(--color-cta); }
+.accordion-trigger .accordion-icon { color:var(--color-cta); margin-left:16px; }
+.accordion-panel { max-height:0; overflow:hidden; transition:max-height var(--transition-base) ease-out; }
+.faq-list { max-width:820px; margin:0 auto; }
+
+/* ── Match-the-prototype compensations for the not-yet-built pages (2026-06-25) ──
+   Replace inline styles the prototype used that a native Webflow build silently
+   drops, so /faq and /wildlife render like the prototype with no Designer tweaks. */
+/* FAQ answer: the prototype styled each answer inline (padding:20px; 1.05rem;
+   line-height:1.7; muted grey). A native answer is a bare <p>/<div> inside
+   .accordion-panel with no padding → text jams the edges. Style the INNER element
+   (its padding stays clipped while the panel is collapsed at max-height:0, and is
+   included in scrollHeight when the JS opens it). */
+.accordion-panel > p,
+.accordion-panel > div { margin: 0; padding: 4px 24px 24px; font-size: 1.05rem; line-height: 1.7; color: var(--color-text-light); }
+/* Section tint utility — the prototype tinted some sections with an inline
+   background:var(--color-off-white) (e.g. Wildlife "Birds"). Native builds drop
+   that. Add the chip `section-tint` to a Section instead of hand-setting the
+   Designer background (one reliable chip vs an easy-to-miss Designer step). */
+.section-tint { background: var(--color-off-white); }
+
+/* ════════════════════════════════════════════════════════════════════════
+   WEBFLOW COMPATIBILITY LAYER v2  (2026-06-25)
+   ────────────────────────────────────────────────────────────────────────
+   The site is built NATIVELY in Webflow (so Chris can edit content) using the
+   prototype's class names. Webflow loads its own generated CSS FIRST, then this
+   hosted sheet via a <link> in Site Settings → Head, so we win ties by source
+   order. This block neutralises ONLY interference observed on the published
+   site (curl of / and /about-us). It is deliberately surgical — no blanket
+   !important (that would clobber the section tints Chris sets in the Designer).
+   Every rule is inert on the static prototype: it keys off Webflow wrappers
+   (.w-dyn-*, .w-inline-block, .w-embed) the prototype doesn't have.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. CMS COLLECTION LISTS (the big fix neither earlier pass made) ───────
+   A Collection List nests  .w-dyn-list > .w-dyn-items > .w-dyn-item.  Our grid
+   class (.tour-grid / .review-grid) lands on the OUTER wrapper, which has ONE
+   child (.w-dyn-items) — so a 4-col grid put that single child in column 1 and
+   collapsed every card to ~¼ width. Fix: wrapper → block, real grid → .w-dyn-items. */
+.tour-grid.w-dyn-list,
+.review-grid.w-dyn-list { display: block; }
+
+.tour-grid .w-dyn-items,
+.tour-grid.w-dyn-items {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+@media (min-width: 1025px) {
+  .tour-grid.tour-grid-3 .w-dyn-items,
+  .tour-grid.tour-grid-3.w-dyn-items {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 1024px) {
+  .tour-grid .w-dyn-items,
+  .tour-grid.w-dyn-items {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .tour-grid .w-dyn-items,
+  .tour-grid.w-dyn-items {
+    grid-template-columns: 1fr;
+  }
+}
+
+.review-grid .w-dyn-items,
+.review-grid.w-dyn-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 768px) {
+  .review-grid .w-dyn-items,
+  .review-grid.w-dyn-items {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Homepage testimonials are a CMS grid (not the static carousel): make each CMS
+   item a review card and shrink the carousel-sized quote so three sit per row.
+   The :not(:has(.review-card)) guard means the dedicated testimonials PAGE — whose
+   CMS item already carries .review-card — gets exactly one card, not two nested. */
+.review-grid .w-dyn-item { display: flex; flex-direction: column; }
+.review-grid .w-dyn-item:not(:has(.review-card)) {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+}
+.review-grid .w-dyn-item > .review-card { width: 100%; }
+.review-grid .testimonial-inner { max-width: none; margin: 0; }
+.review-grid .testimonial-stars { font-size: 1.05rem; letter-spacing: 2px; margin-bottom: 14px; }
+.review-grid .testimonial-quote { font-size: 1.05rem; line-height: 1.6; margin-bottom: 16px; }
+.review-grid .testimonial-author { font-size: 0.9rem; }
+
+/* ── Homepage testimonials CAROUSEL ───────────────────────────────────────
+   Restores the prototype's fading one-at-a-time carousel (auto-advance + dots)
+   on top of the CMS Collection List, so Chris still edits reviews in the CMS.
+   ENABLE: add the class `testimonial-carousel` to the homepage Testimonials
+   Collection List (the same element that carries `review-grid`). The
+   /testimonials PAGE has no such class, so it stays a 3-up grid.
+   ROBUST TO PLACEMENT: in Webflow the class usually lands ON the .w-dyn-items
+   element (the "Collection List"), but it can also sit on the .w-dyn-list
+   wrapper — both selectors below cover it, so the grid-stack always applies.
+   Slides stack in one grid cell (container sizes to the tallest); footer JS
+   toggles .is-active + builds the .testimonial-dots. */
+.testimonial-carousel.w-dyn-items,
+.testimonial-carousel .w-dyn-items { display: grid; grid-template-columns: 1fr; gap: 0; }
+.testimonial-carousel .w-dyn-item {
+  grid-row: 1; grid-column: 1;
+  opacity: 0; visibility: hidden;
+  transition: opacity .6s ease, transform .6s ease;
+  transform: translateY(10px);
+}
+.testimonial-carousel .w-dyn-item.is-active { opacity: 1; visibility: visible; transform: translateY(0); z-index: 1; }
+/* The carousel shows ONE big centered testimonial → UNDO the 3-up grid's card
+   box + shrink that .review-grid (on the same wrapper) applies, and restore the
+   prototype's centered 820px column. These match/exceed .review-grid specificity
+   and come later, so they win. */
+.testimonial-carousel .w-dyn-item:not(:has(.review-card)) {
+  background: none; border: 0; border-radius: 0; padding: 0; box-shadow: none;
+}
+.testimonial-carousel .testimonial-inner { max-width: 820px; margin: 0 auto; text-align: center; }
+.testimonial-carousel .testimonial-stars { font-size: 1.4rem; letter-spacing: 4px; margin-bottom: 28px; }
+.testimonial-carousel .testimonial-quote { font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.5; margin-bottom: 28px; }
+.testimonial-carousel .testimonial-author { font-size: 0.95rem; }
+/* the stars are a decorative SVG embed: Webflow wraps it in a block .w-embed and
+   the <svg> carries inline display:block, so text-align:center can't move it (it
+   sat hard-left). Centre the embed itself with flex + add the prototype's spacing
+   under the stars. */
+.testimonial-carousel .testimonial-inner .w-embed { display: flex; justify-content: center; margin-bottom: 24px; }
+/* dots use the base .testimonial-dots (grid-row 2, centered) — keep them centered
+   whether the JS drops them inside the grid or just after it */
+.testimonial-carousel .testimonial-dots { display: flex; justify-content: center; gap: 10px; margin-top: 24px; }
+
+/* A white background got applied to the .section-title class in the Webflow
+   Designer, so it paints a white bar across every OFF-WHITE section (Choose Your
+   Tour, Accreditations, Testimonials). Section headings never need a background;
+   force it off. !important so it wins regardless of where Webflow set it. The
+   real one-click fix is also to remove that background on the heading in Webflow. */
+.section-title { background: transparent !important; }
+
+/* ── 2. NATIVE LINKS & BUTTONS site-wide ──────────────────────────────────
+   Every Webflow Link Block is <a class="… w-inline-block"> with its label in an
+   inner <div>. The navbar guard fixes this inside .navbar; do the same for
+   buttons everywhere (hero, cards, cta-bands, tour pages). */
+a.w-inline-block { max-width: none; }
+.btn.w-inline-block { display: inline-flex; }
+.btn > div { display: inline; line-height: inherit; letter-spacing: inherit; color: inherit; }
+
+/* ── 3. TEXT BLOCKS RENDER AS <div> ───────────────────────────────────────
+   Webflow's Text Block outputs a <div>, so <p> rules miss it. (Guides tell
+   Daniel to use the PARAGRAPH element for body copy — a real <p> — but these
+   keep it correct if a Text Block is used instead.) */
+.prose > div { margin-bottom: 20px; font-size: 1.08rem; line-height: 1.85; color: var(--color-text); }
+.value-prop > div:last-child { font-size: 0.95rem; line-height: 1.75; color: var(--color-text-light); }
+
+/* ── 4. COMBINING TWO CMS FIELDS ON ONE LINE ──────────────────────────────
+   Webflow can't bind two fields to one text element, so a row is built from
+   several inline text elements (e.g. .tour-card-price = a "From $" Text Block +
+   a Text Block bound to Price-from carrying class .price-strong). .tour-card-meta
+   is already flex, so its inline children line up automatically. */
+.tour-card-price > div { display: inline; }
+.price-strong { font-size: 1.35rem; font-weight: 700; color: var(--color-primary); }
+
+/* ── 5. DECORATIVE ICON EMBEDS (.w-embed) ─────────────────────────────────
+   Self-contained SVG icons paste as HTML Embeds → wrapped in .w-embed. Keep
+   them aligned where .trust-ic / .vp-icon used to sit. */
+.trust-item .w-embed { display: inline-flex; align-items: center; }
+.value-prop .w-embed { display: block; width: 46px; height: 46px; margin: 0 auto 18px; }
+.value-prop .w-embed svg { display: block; margin: 0 auto; }
+
+/* ── 6. DEFENSIVE ─────────────────────────────────────────────────────────
+   Webflow can paint `.container { background:#fff }`; the prototype never
+   colours .container, so keep it clear (no !important — source order wins).
+   Also pin the nav logo height (width is handled by the navbar guard). */
+.container { background-color: transparent; }
+.navbar .nav-logo-mark { height: 76px; }
+@media (max-width: 768px) { .navbar .nav-logo-mark { height: 54px; } }
+
+/* ── 7. INLINE-STYLE SPACING THE PROTOTYPE HAD THAT NATIVE BUILDS LOSE ─────
+   The prototype centres each section heading in <div class="text-center"
+   style="margin-bottom:48px"> and spaces the trailing button with an inline
+   margin-top. Those inline styles don't exist in a native Webflow build, so
+   headings sat flush against their grids ("lacks padding"). Re-apply by class:
+   any .text-center holding a .section-title gets the 48px gap; a .text-center
+   holding only a button gets the top gap. (Verified on the live build: 3 of 5
+   home headings — Featured Tours, Value Props, Testimonials — had a 0px gap.) */
+.text-center:has(> .section-title) { margin-bottom: 48px; }
+.section-padding .text-center:has(> .btn) { margin-top: 40px; }
+
+/* ── 8. TOUR-CARD PHOTO MUST NOT BE HIDDEN ────────────────────────────────
+   On the live CMS build the .tour-card-bg div (which carries the bound photo)
+   came back display:none, collapsing .tour-card-media to 0px so every featured
+   tour showed no image. Force the media + its photo to render. (The cleaner
+   build — a native bound <img> — is described in tour-template-native.txt.) */
+.tour-card .tour-card-media { min-height: 200px; }
+.tour-card .tour-card-bg { display: block !important; }
+
+/* ── 9. PHOTO GALLERY 3-COL VARIANT ───────────────────────────────────────
+   The wildlife page wants a 3-across gallery (prototype did it with an inline
+   override). Add this combo class so the native build needs no inline style. */
+.photo-gallery-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 768px) { .photo-gallery-3 { grid-template-columns: repeat(2, 1fr); } }
+
+/* ── 10. MOBILE DROPDOWN — kill the faint green bar + centre the sub-links ──
+   PROTOTYPE BUG (also on Webflow): the COLLAPSED mobile .nav-dropdown kept its
+   8px top+bottom padding and rgba(255,255,255,.05) background, so even when closed
+   it rendered a ~16px lighter-green bar under "Dunedin Tours" (max-height:0 clips
+   content but not padding). Zero the padding + background when collapsed so it's
+   truly invisible, and centre the sub-links so they line up with the centred main
+   links (they were left-aligned). Desktop dropdown (white panel) is untouched. */
+@media (max-width: 768px) {
+  .nav-dropdown { padding: 0; margin-top: 0; background: transparent; }
+  .nav-item.dropdown-open .nav-dropdown { margin-top: 2px; padding: 4px 0; }
+  .nav-dropdown a { text-align: center; }
+  /* "Dunedin Tours" sat left-aligned because its nav-item was widened by the
+     dropdown; make every mobile item full-width + centred so all links align
+     (text-align:center also centres the inline-flex "Book Now" button). */
+  .nav-menu .nav-item { width: 100%; text-align: center; }
+  .nav-menu .nav-link { text-align: center; }
+}
+
+/* ============================================================
+   TOUR-DETAIL CUSTOM CLASSES (td-*)
+   Applied in the Designer ONLY on tour template elements.
+   Unique names — no collision with existing styles.
+   ============================================================ */
+
+/* --- td-outline: dark outline button on light backgrounds ------------ */
+.td-outline {
+  background: transparent !important;
+  color: var(--color-cta, #92ba34) !important;
+  border-color: var(--color-cta, #92ba34) !important;
+}
+.td-outline:hover {
+  background: var(--color-cta, #92ba34) !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
+/* --- td-highlights: match prototype .value-props exactly --- */
+.td-highlights {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  position: relative !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+.td-highlights ul {
+  width: 100% !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+  list-style: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 48px !important;
+}
+.td-highlights li {
+  text-align: center !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-size: 0.95rem !important;
+  line-height: 1.75 !important;
+  color: var(--color-text-light, #577366) !important;
+}
+.td-highlights li::before {
+  display: none !important;
+}
+.td-highlights li strong {
+  display: block !important;
+  font-family: var(--font-heading, 'Montserrat', sans-serif) !important;
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
+  color: var(--color-dark, #0b2218) !important;
+  margin-bottom: 12px !important;
+  line-height: 1.3 !important;
+}
+/* heading above the highlights */
+.td-highlights-wrap {
+  text-align: center !important;
+  margin-bottom: 48px !important;
+}
+
+/* --- td-pricing: styled pricing section ------------------------------ */
+/* td-pricing-section: off-white bg on the pricing section */
+.td-pricing-section {
+  background: var(--color-off-white, #f8faf6);
+}
+
+/* td-pricing-header: centres the heading + subtitle in pricing */
+.td-pricing-header {
+  text-align: center;
+  margin-bottom: 8px;
+}
+.td-pricing-header + p {
+  text-align: center;
+  color: var(--color-text-light, #577366);
+  margin-bottom: 36px;
+}
+
+/* Wraps the CMS Rich Text (a <ul> of "Adult — $159 NZD") in a clean
+   card layout with off-white background and proper spacing. */
+.td-pricing {
+  background: var(--color-off-white, #f8faf6);
+  border-radius: 12px;
+  padding: 40px 36px;
+  max-width: 700px;
+  margin: 24px auto;
+  border: 1px solid rgba(18, 77, 56, 0.08);
+}
+.td-pricing ul {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 0 32px 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 24px !important;
+}
+.td-pricing li {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-dark, #0b2218);
+  border: 1px solid rgba(18, 77, 56, 0.06);
+  text-align: center;
+}
+/* Make the price portion (after the dash) bold + green.
+   Since CMS puts "Adult (16+) — $159 NZD" in one <li>, we can't
+   split it — but we style the whole item cleanly. If the builder
+   separates the items, td-pricing-amount targets the price span. */
+.td-pricing-amount {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-cta, #92ba34);
+}
+/* Book button inside the pricing section */
+.td-pricing-section .btn-book,
+.td-book {
+  display: block !important;
+  margin: 0 auto !important;
+  text-align: center;
+  width: fit-content;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+/* --- td-accordion-trigger: styled accordion label -------------------- */
+.td-accordion-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 8px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border, #dbeae4);
+  text-align: left;
+  font-family: var(--font-heading, 'Montserrat', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-dark, #0b2218);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.td-accordion-trigger:hover {
+  color: var(--color-cta, #92ba34);
+}
+
+/* --- td-accordion-body: panel content wrapper with padding ----------- */
+.td-accordion-body,
+.td-accordion-section .accordion-panel {
+  padding: 0 !important;
+}
+
+.td-accordion-body h4,
+.td-accordion-section .w-richtext h4,
+.accordion-panel .w-richtext h4,
+.accordion-panel h4 {
+  font-family: var(--font-heading, 'Montserrat', sans-serif) !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  color: var(--color-dark, #0b2218) !important;
+  margin: 32px 0 12px !important;
+}
+.td-accordion-body h4:first-child,
+.td-accordion-section .w-richtext h4:first-child,
+.accordion-panel .w-richtext h4:first-child,
+.accordion-panel h4:first-child {
+  margin-top: 0 !important;
+}
+.td-accordion-body p,
+.td-accordion-section .w-richtext p,
+.accordion-panel .w-richtext p,
+.accordion-panel p {
+  margin: 0 0 20px !important;
+  font-size: 1.1rem !important;
+  line-height: 1.8 !important;
+  color: var(--color-text-light, #577366) !important;
+}
+
+/* --- td-accordion-section: wrapper for the whole what-to-bring block - */
+/* Gives the accordion section a clean card look with border. */
+.td-accordion-section {
+  background: var(--color-off-white, #f8faf6);
+  border-radius: 12px;
+  padding: 8px 20px;
+  border: 1px solid rgba(18, 77, 56, 0.08);
+  overflow: hidden;
+}
+
+/* --- td-gallery-grid: multi-image repeater grid ---------------------- */
+.td-gallery-grid {
+  display: block !important; /* Forces override of .photo-gallery grid layout */
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  position: static !important;
+  transform: none !important;
+}
+.td-gallery-grid .w-dyn-list {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+.td-gallery-grid .w-dyn-items {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 24px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  justify-content: center !important;
+}
+.td-gallery-grid .w-dyn-item {
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+.td-gallery-grid .w-dyn-item img {
+  width: 100% !important;
+  aspect-ratio: 1 !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 8px !important;
+  transition: transform .3s ease, opacity .3s ease !important;
+}
+.td-gallery-grid .w-dyn-item img:hover {
+  transform: scale(1.03) !important;
+  opacity: 0.9 !important;
+}
+/* If repeater items are empty (no <img> added yet), hide them */
+.td-gallery-grid .w-dyn-item:empty {
+  display: none;
+}
+
+/* --- td-gallery-heading: centred heading above gallery --------------- */
+.td-gallery-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+/* --- Responsive: stack gallery on mobile ----------------------------- */
+@media (max-width: 991px) {
+  .td-gallery-grid .w-dyn-items {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 600px) {
+  .td-gallery-grid .w-dyn-items {
+    grid-template-columns: 1fr !important;
+  }
+  /* Mobile: single column highlights */
+  .td-highlights ul {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .td-highlights li {
+    padding: 0;
+  }
+  .td-pricing {
+    padding: 24px 20px;
+  }
+}
+body { overflow-x: hidden !important; }
+
+/* --- td-fact-strip: user requested section background and missing classes fix --- */
+section:has(.fact-strip) {
+  background-color: var(--color-off-white, #f8faf6) !important;
+}
+.fact > div:first-child {
+  display: block !important;
+  font-size: .72rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  color: var(--color-text-muted, #70857a) !important;
+  margin-bottom: 6px !important;
+}
+.fact > div:last-child {
+  font-family: var(--font-heading, 'Montserrat', sans-serif) !important;
+  font-size: 1.15rem !important;
+  font-weight: 600 !important;
+  color: var(--color-dark, #0b2218) !important;
+}
